@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.TECH - Eastern Technological College</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --etech-blue: #1a237e;
+            --etech-red: #d32f2f;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', 'Tahoma', sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        /* --- รูปที่ 1 & 2: Top Bar & Navigation --- */
+        .top-header {
+            background: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section img { height: 70px; }
+
+        .nav-bar {
+            background: var(--etech-blue);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+        }
+
+        /* --- รูปที่ 1: Hero Banner --- */
+        .hero-banner {
+            background: url('banner-bg.jpg') no-repeat center center; /* เปลี่ยนเป็นรูปพื้นหลังขาวฟ้า */
+            background-size: cover;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .admission-title {
+            font-size: 3rem;
+            color: #1a237e;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- รูปที่ 2: Content Sections --- */
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 0 15px;
+        }
+
+        .admission-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card img { width: 100%; }
+
+        .shortcut-menu {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* --- รูปที่ 3: About Sections (Blue Background) --- */
+        .about-etech {
+            background: linear-gradient(rgba(26, 35, 126, 0.9), rgba(26, 35, 126, 0.9)), url('college-bg.jpg');
+            background-size: cover;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .about-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .about-item {
+            width: 200px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+       
+    /* --- รูปที่ 4: Pop-up (Royal Celebration) --- */
+    .modal-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    .royal-popup {
+        background: #797979; 
+        background: radial-gradient(circle, #7b7b7b 0%, #6e6e6e 100%);
+        width: 95%; /* ขยายความกว้างเล็กน้อยเพื่อให้พอดีกับแนวขวาง */
+        max-width: 850px;
+        padding: 40px;
+        border: 5px solid #fff3e0;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        
+        /* แก้ไขส่วนนี้เพื่อให้เนื้อหาเรียงซ้ายขวา */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 30px; /* ระยะห่างระหว่างรูปกับข้อความ */
+        text-align: center;
+    }
+
+    .royal-image-frame {
+        flex-shrink: 0; /* ป้องกันรูปภาพถูกบีบ */
+        width: 250px; /* ปรับขนาดรูปให้พอดี */
+        height: 340px;
+        border: 8px double #616161;
+        border-radius: 120px 120px 10px 10px;
+        margin: 0; /* เอา margin auto ออก */
+        overflow: hidden;
+        background: #7f7f7f;
+    }
+
+    .royal-text-content {
+        flex-grow: 1; /* ให้ข้อความใช้พื้นที่ที่เหลือด้านขวา */
+    }
+
+    .close-popup {
+        position: absolute;
+        top: -15px; right: -15px;
+        background: #d32f2f;
+        color: white;
+        border: none;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .hidden { display: none; }
+</style>
+
+<div class="modal-overlay" id="popup">
+    <div class="royal-popup">
+        <button class="close-popup" onclick="togglePopup()">X</button>
+        
+        <div class="royal-image-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Queen_Sirikit%2C_Galaconcert_door_Koninklijke_Militaire_Kapel_in_de_Kurzaal_te_Den_Haag_%2C_Koningi%2C_Bestanddeelnr_911-7032.jpg/250px-Queen_Sirikit%2C_Galaconcert_door_Koninklijke_Militaire_Kapel_in_de_Kurzaal_te_Den_Haag_%2C_Koningi%2C_Bestanddeelnr_911-7032.jpg" style="width:100%; height:100%; object-fit:cover;" alt="Portrait">
+        </div>
+
+        <div class="royal-text-content">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Royal_Monogram_of_Queen_Sirikit.svg" style="width:60px; margin-bottom: 10px;" alt="Portrait">
+            <h2 style="color: #000000; margin-bottom: 5px;">ขอพระองค์ทรงพระเจริญ</h2>
+            <p>๘ มกราคม ๒๕๖๙ วันคล้ายวันประสูติ</p>
+            <p style="font-weight: bold;">สมเด็จพระนางเจ้าสิริกิติ์ พระบรมราชินีนาถ พระบรมราชชนนีพันปีหลวง</p>
+            <hr style="width: 70%; border: 0.5px solid rgb(0, 0, 0); margin: 15px auto;">
+            <p style="font-size: 14px; line-height: 1.6;">เสด็จสวรรคตเมื่อวันที่ 24 ตุลาคม พ.ศ. 2568 <br>ควรมิควรแล้วแต่จะโปรดเกล้าโปรดกระหม่อม<br>โรงเรียนสกาย</p>
+        </div>
+    </div>
+</div>
+
+    <header class="top-header">
+        <div class="logo-section">
+            <img src="https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/633951826_122117499663096634_8564865007624898491_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_ohc=RuC2REO7gHoQ7kNvwHsiVWX&_nc_oc=AdmQ5JHZjKUwoWS3bhCKD6cXTSuFGGqHVcqSw5FYNJiHM7b3qazdPno3Fw0hUIUcdMwMglhNLKzdUVPS_lYM1yr3&_nc_zt=23&_nc_ht=scontent.fbkk13-2.fna&_nc_gid=D7iT55j8_xwLRpOBJViuZA&oh=00_AfuFKAlLYkEBIDV7m9m7BbuHItA_SjDJqWJBOLGH6FJ0QQ&oe=699A2F09" alt="E.TECH Logo">
+            <p>โรงเรียนสกาย</p>
+        </div>
+        <div class="social-links">
+            </div>
+    </header>
+      
+
+    <nav class="nav-bar">
+        <a href="#">Home</a> <a href="#">รู้จักอี.เทค</a> <a href="#">สมัครเรียน</a> <a href="#">หลักสูตร</a> <a href="#">ติดต่อเรา</a>
+    </nav>
+
+    <section class="hero-banner">
+        <div class="admission-title">เปิดรับสมัครนักศึกษาใหม่ 2569</div>
+        <p>ระดับ ปวช. - ปวส.</p>
+        <div style="background: red; color: white; display: inline-block; padding: 5px 15px;">อี.เทค 69</div>
+    </section>
+
+
+/*                                                                                                                                  */
+   
+<marquee direction="left" bgcolor="#f0f0f0" scrollamount="5" style="padding: 5px; border: 1px solid #ccc; font-size: 18px; color: #333;">
+  **ประกาศสำคัญ:** กรุณาตรวจสอบข้อมูลล่าสุด! ปรับแก้ข้อความของคุณได้ที่นี่
+</marquee>
+
+
+
+    <style>
+/* CSS: กำหนดรูปแบบของสไลด์ให้มาอยู่กึ่งกลาง */
+.slideshow-container {
+    max-width: 1000px; /* กำหนดความกว้างสูงสุดที่ต้องการ เช่น 1000px หรือ 80% */
+    position: relative;
+    margin: 40px auto; /* auto ที่ด้านซ้ายและขวาจะทำให้วัตถุอยู่กึ่งกลาง */
+    overflow: hidden;
+    border-radius: 10px; /* เพิ่มขอบมนให้สวยงาม (ใส่หรือไม่ก็ได้) */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* เพิ่มเงาให้ดูมีมิติ (ใส่หรือไม่ก็ได้) */
+}
+
+.mySlides {
+    display: none;
+    text-align: center; /* จัดรูปภาพภายในให้อยู่กลาง */
+}
+
+.mySlides img {
+    width: 100%; /* ให้รูปภาพขยายเต็ม container */
+    height: auto;
+    display: block; /* ลดช่องว่างใต้รูปภาพ */
+}
+</style>
+
+<div class="slideshow-container">
+
+  <div class="mySlides">
+    <img src="https://i.ytimg.com/vi/DsDVJRAwliM/sddefault.jpg?v=68fc5df9" alt="รูปภาพที่ 1">
+  </div>
+
+  <div class="mySlides">
+    <img src="data:image/jpeg;base64,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" alt="รูปภาพที่ 2">
+  </div>
+
+  <div class="mySlides">
+    <img src="https://images.dmc.tv/www/images/!!!!!-Buddhism-News/Chakri-Memorial-Day-1.jpg" alt="รูปภาพที่ 3">
+  </div>
+
+  <div class="mySlides">
+    <img src="https://www.rmutt.ac.th/wp-content/uploads/2023/04/songkranday2023-01.jpg" alt="รูปภาพที่ 4">
+  </div>
+
+
+  <div class="mySlides">
+    <img src="https://www.thipmongkol555.com/wp-content/uploads/2020/05/1-%E0%B9%80%E0%B8%A1%E0%B8%A9%E0%B8%B2-%E0%B9%81%E0%B8%A3%E0%B8%87%E0%B8%87%E0%B8%B2%E0%B8%99-1080x675.jpg" alt="รูปภาพที่ 5">
+  </div>
+
+  <div class="mySlides">
+    <img src="https://lh4.googleusercontent.com/proxy/kMpNgxwZQgNRt-nhMNZ_ToZv8Hu3aYL_4Laar2ARZeq4R2uSCmbwoT1mnE1ezqTEr348xmlAxkoAPk-ZQ0rynKFYwbM-3FiLdq_n6QNRiUfkGkX_" alt="รูปภาพที่ 6">
+  </div>
+
+
+</div>
+
+<script>
+// JAVASCRIPT: ทำให้รูปภาพเลื่อนเปลี่ยนได้
+let slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  
+  // ซ่อนรูปภาพทั้งหมด
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  
+  // เลื่อนไปรูปถัดไป
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  
+  // แสดงรูปภาพปัจจุบัน
+  slides[slideIndex-1].style.display = "block";  
+  
+  // หน่วงเวลา 3 วินาที (3000 มิลลิวินาที) แล้วเรียกฟังก์ชันเดิมซ้ำ
+  setTimeout(showSlides, 3000); 
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+    <div class="main-content">
+        <div class="admission-cards">
+            <div class="card"><img src="https://www.rmutt.ac.th/wp-content/uploads/2023/04/songkranday2023-01.jpg" alt="ปวช."><h3>ปวช.</h3></div>
+            <div class="card"><img src="https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/637699539_122117605593096634_2631017587443504632_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=111&ccb=1-7&_nc_sid=13d280&_nc_ohc=cTE3osovIZkQ7kNvwEr1sun&_nc_oc=AdmkmLXoErhhTrTJ3k_vPn5Y75Sl5aLT7c2XqT4yFN1_h0bqQoS94hQ8uZwKLx9tiKd6GePH8dgUlJ4U7QeNC6Pl&_nc_zt=23&_nc_ht=scontent.fbkk13-2.fna&_nc_gid=kXJqgsbh-RmoB9NWroiPew&oh=00_AfvyvTHD_l-AXUVD6kGDgtKwaWd0FgurVCnVn76p6X3VDg&oe=699B2912" alt="ปวส."><h3>ปวส.</h3></div>
+            <div class="card"><img src="worker.jpg" alt="คนทำงาน"><h3>ปวส. (ทำงาน)</h3></div>
+        </div>
+       <aside class="shortcut-menu">
+    <h3>คุณคือใคร?</h3> 
+    <a href="https://www.google.com" target="_blank" class="btn-small btn-blue 18px">นักเรียน</a>
+    <a href="https://www.google.com" target="_blank" class="btn-small btn-blue">ผู้ปกครอง</a>
+    <a href="https://www.google.com" target="_blank" class="btn-small btn-blue">บุคลากร</a>
+    <a href="https://www.google.com" target="_blank" class="btn-small btn-blue">ศิษย์เก่า</a> 
+</aside>
+          
+    </div>
+
+    <section class="about-etech">
+        <h2>รู้จัก อี.เทค</h2>
+        <div class="about-grid">
+            <div class="about-item">ประวัติความเป็นมา</div>
+            <div class="about-item">วิสัยทัศน์และพันธกิจ</div>
+            <div class="about-item">ตราสัญลักษณ์</div>
+            <div class="about-item">เพลงประจำสถาบัน</div>
+        </div>
+    </section>
+
+    <script>
+        function togglePopup() {
+            document.getElementById('popup').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
